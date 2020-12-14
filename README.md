@@ -1,1 +1,1 @@
-# rock-paper-scissors
+This is a sample program to play a single round of rock paper scissors
