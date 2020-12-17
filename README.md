@@ -1,1 +1,1 @@
-This is a sample program to play a single round of rock paper scissors
+This is a sample program to play RPS against the computer, first to 5 wins!
