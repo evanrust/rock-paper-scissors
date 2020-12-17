@@ -1,8 +1,7 @@
 //starts a new game
 function game(){
 
-    //play 5 rounds
-    for(let i = 0; i<5; i++){
+
         //prompt the user for entry
         let playerSelection = window.prompt("Choose your fighter");
 
@@ -11,7 +10,6 @@ function game(){
 
         //print the result
         console.log(thisGame);
-    }
     
     //display final score
     console.log("Player score: " + playerScore);
@@ -63,27 +61,42 @@ function playRps(playerSelection, computerSelection){
         }
         else result = 1;
     }
-
     //print result
-    return printResult(result, ps, cs);
+    printResult(result, ps, cs);
 }
 
 //print the results of a game
 function printResult(result, playerSelection, computerSelection){
+    const ps = document.querySelector(".ps");
+    const cs = document.querySelector(".cs");
+    const winner = document.querySelector(".winner");
     if(result == -1){
         compScore++;
-        return 'You lost: ' + computerSelection + ' beats ' + playerSelection;
+        cs.textContent = compScore;
     } else if (result == 1){
         playerScore++;
-        return 'You won: ' + playerSelection + ' beats ' + computerSelection;
-    } else return 'Draw on ' + playerSelection;
+        ps.textContent = playerScore;
+    } 
+    else {} //do nothing
+
+    if(compScore == 5){
+        winner.textContent = "Computer Wins!";
+    }
+    else if (playerScore == 5){
+        winner.textContent = "You Win!";
+    }
+    else{} //do nothing
 }
 
+//get buttons
+const buttons = document.querySelectorAll(".btn");
 
-
-//test it
+//add event listener for clicks
+buttons.forEach(b => b.addEventListener("click",function(){
+    playRps(b.textContent,computerPlay());
+})
+)
 
 //start keeping score
 let playerScore = 0;
 let compScore = 0;
-game();
