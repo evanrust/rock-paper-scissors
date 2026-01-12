@@ -1,3 +1,29 @@
+//Vars
+const rock = document.querySelector(".rock")
+const paper = document.querySelector(".paper")
+const scissors = document.querySelector(".scissors")
+const results = document.querySelector(".results")
+const overall = document.querySelector(".gameProgress")
+
+
+// add listeners to the buttons -- when clicked, save that as the human choice and start a round
+rock.addEventListener('click',startRound)
+paper.addEventListener('click',startRound)
+scissors.addEventListener('click',startRound)
+
+//Function that starts the game/saves human choice
+function startRound(e){
+    let humanChoice = e.target.textContent
+    playRound(humanChoice)
+}
+
+//add to scores
+function roundWon(e){
+    let currScore = parseInt(e.textContent)
+    let newScore = currScore + 1
+    e.textContent = newScore
+}
+
 //Function that randomly returns rock, paper, scissors
 function getComputerChoice() {
     let num = Math.random() * 100;
@@ -5,63 +31,64 @@ function getComputerChoice() {
 
     //equal weight of RPS
     if (num < 33) {
-        choice = "rock"
+        choice = "Rock"
     } else if (num < 66) {
-        choice = "paper"
-    } else choice = "scissors";
-
-    return choice;
-}
-
-//Function that gets the human choice
-function getHumanChoice() {
-    let choice;
-    let isValid = false;
-
-    //validate choice, case-insensitive, keep prompting
-    while (!isValid) {
-        //get the choice -- could make this a function
-        choice = prompt("Enter Rock, Paper, or Scissors").toLowerCase();
-
-        //check if the choice is valid
-        if (choice === 'rock' || choice === 'paper' || choice === 'scissors') {
-            //if so, exit
-            return choice;
-        } else {
-            console.log("Invalid choice: " + choice)
-            // do nothing
-        }
-    }
+        choice = "Paper"
+    } else choice = "Scissors";
 
     return choice;
 }
 
 
 //Function to play the game
-function playRound(humanScore, computerScore) {
+function playRound(humanChoice) {
 
-    //choose what to throw
-    let humanChoice = getHumanChoice();
+    const computerScoreTxt = document.querySelector(".compScore") ///how do i get the value from the html
+    const humanScoreTxt = document.querySelector(".humanScore")
+
+    //set up stuff for displaying on this li
+    let newLi = document.createElement("li")
+    let thisResult
+
+    //get computer choice
     let computerChoice = getComputerChoice();
 
     //Draw Scenario
     if (computerChoice === humanChoice) {
-        console.log("Draw!")
-    } else if ((humanChoice === 'rock' && computerChoice === 'scissors') || (humanChoice === 'paper' && computerChoice === 'rock') || (humanChoice === 'scissors' && computerChoice === 'paper')) {
-        console.log("You win! " + humanChoice + " beats " + computerChoice);
-        return 1; //win
+        thisResult = 'Draw'
+    } else if ((humanChoice === 'Rock' && computerChoice === 'Scissors') || (humanChoice === 'Paper' && computerChoice === 'Rock') || (humanChoice === 'Scissors' && computerChoice === 'paper')) {
+        thisResult = "You win! " + humanChoice + " beats " + computerChoice
+        roundWon(humanScoreTxt)
     } else {
-        console.log("You lose! " + computerChoice + " beats " + humanChoice);
-        return -1; //loss
+        thisResult = "You lose! " + computerChoice + " beats " + humanChoice
+        roundWon(computerScoreTxt)
     }
 
+    //update game progress if won
+    if(humanScoreTxt.textContent === '5' || computerScoreTxt.textContent === '5'){
+        overall.textContent = 'GAME OVER'
+    }
+
+    //add a bullet with the result + score
+    newLi.textContent = thisResult
+    results.appendChild(newLi)
+
 }
+
+//main
+
+
+
+/* below is logic to play 5 rounds
 
 function playGame() {
 
     //initial setup
     let humanScore = 0;
     let computerScore = 0;
+
+
+    
 
     //keep playing until one of the scores reaches 5
     while (humanScore < 5 && computerScore < 5) {
@@ -80,7 +107,11 @@ function playGame() {
 
     }
 
+
+
 }
 
 //Go!
 playGame();
+
+*/
